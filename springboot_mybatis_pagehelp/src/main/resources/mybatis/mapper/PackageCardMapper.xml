@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zxl.springboot_mybatis_pagehelp.mapper.PackageCardMapper">
+    <resultMap id="BaseResultMap" type="com.zxl.springboot_mybatis_pagehelp.entity.PackageCard">
+        <id column="ID" jdbcType="BIGINT" property="id"/>
+        <result column="PACKAGE_CARD_CODE" jdbcType="VARCHAR" property="packageCardCode"/>
+        <result column="PACKAGE_CARD_NAME" jdbcType="VARCHAR" property="packageCardName"/>
+        <result column="PICTURE_URL" jdbcType="VARCHAR" property="pictureUrl"/>
+        <result column="SALE_PRICE" jdbcType="DECIMAL" property="salePrice"/>
+        <result column="STATE" jdbcType="TINYINT" property="state"/>
+        <result column="OPERATOR" jdbcType="VARCHAR" property="operator"/>
+        <result column="CREATE_DATETIME" jdbcType="TIMESTAMP" property="createDatetime"/>
+        <result column="UPDATE_DATETIME" jdbcType="TIMESTAMP" property="updateDatetime"/>
+        <result column="REMARKS" jdbcType="VARCHAR" property="remarks"/>
+        <result column="DEL_FLAG" jdbcType="TINYINT" property="delFlag"/>
+        <result column="CARD_COUNT" jdbcType="BIGINT" property="cardCount"/>
+        <result column="BONDED_COUNT" jdbcType="BIGINT" property="bondedCount"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ID, PACKAGE_CARD_CODE, PACKAGE_CARD_NAME, PICTURE_URL, SALE_PRICE, `STATE`, `OPERATOR`, 
+    CREATE_DATETIME, UPDATE_DATETIME, REMARKS, DEL_FLAG,CARD_COUNT,BONDED_COUNT
+    </sql>
+    <sql id="tableName">tb_package_card</sql>
+
+    <select id="findPage" parameterType="com.zxl.springboot_mybatis_pagehelp.entity.PackageCard" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        <include refid="tableName"/>
+        where
+        DEL_FLAG = 0
+        <if test="packageCardName != null">
+            and PACKAGE_CARD_NAME LIKE CONCAT('%', #{packageCardName}, '%')
+        </if>
+
+        <if test="state != null">
+            and `STATE` = #{state,jdbcType=TINYINT}
+        </if>
+
+        <if test="packageCardCode != null">
+            and PACKAGE_CARD_CODE = #{packageCardCode,jdbcType=BIGINT}
+        </if>
+    </select>
+</mapper>
